@@ -9,6 +9,13 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // MARK: Properties
+    
+    @IBOutlet weak var btnStart: UIButton!
+    @IBOutlet weak var btnStop: UIButton!
+    @IBOutlet weak var txtLog: UITextView!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +27,15 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    
+    // MARK: Actions
+    
+    @IBAction func btnStartClicked(_ sender: UIButton) {
+        txtLog.text = "Start locating\n" + txtLog.text
+    }
 
+    @IBAction func btnStopClicked(_ sender: UIButton) {
+        txtLog.text = "Stopping locating\n" + txtLog.text
+    }
 }
 
