@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreLocation
+import CoreBluetooth
 
 class ViewController: UIViewController {
     
@@ -19,8 +21,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        print("hello there")
+        var r = Location.getLocation(withAccuracy: .any, frequency: .oneShot, timeout: nil, onSuccess: { (loc) in
+            print("loc \(loc)")
+        }) { (last, err) in
+            print("err \(err)")
+        }
+        r.onAuthorizationDidChange = { newStatus in
+            print("New status \(newStatus)")
+        }
+        print("done!!!!")
     }
+        
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

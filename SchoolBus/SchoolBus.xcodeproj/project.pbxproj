@@ -14,6 +14,15 @@
 		B15FFD4A1D8DFFCC000E53B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */; };
 		B15FFD551D8DFFCC000E53B6 /* SchoolBusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD541D8DFFCC000E53B6 /* SchoolBusTests.swift */; };
 		B15FFD601D8DFFCC000E53B6 /* SchoolBusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */; };
+		B17305051DAAE9F000300EB9 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305041DAAE9F000300EB9 /* Commons.swift */; };
+		B173050B1DAAEA1800300EB9 /* BeaconsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305071DAAEA1800300EB9 /* BeaconsManager.swift */; };
+		B173050C1DAAEA1800300EB9 /* GeoRegionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305081DAAEA1800300EB9 /* GeoRegionRequest.swift */; };
+		B173050D1DAAEA1800300EB9 /* BeaconRegionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305091DAAEA1800300EB9 /* BeaconRegionRequest.swift */; };
+		B173050E1DAAEA1800300EB9 /* BeaconAdvertiseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B173050A1DAAEA1800300EB9 /* BeaconAdvertiseRequest.swift */; };
+		B17305141DAAEA5C00300EB9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305101DAAEA5C00300EB9 /* LocationManager.swift */; };
+		B17305151DAAEA5C00300EB9 /* HeadingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305111DAAEA5C00300EB9 /* HeadingRequest.swift */; };
+		B17305161DAAEA5C00300EB9 /* LocationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305121DAAEA5C00300EB9 /* LocationRequest.swift */; };
+		B17305171DAAEA5C00300EB9 /* VisitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17305131DAAEA5C00300EB9 /* VisitRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +40,27 @@
 			remoteGlobalIDString = B15FFD3B1D8DFFCC000E53B6;
 			remoteInfo = SchoolBus;
 		};
+		B17305201DAAEDDE00300EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 08819F131CD51F9B00EFD938;
+			remoteInfo = SwiftLocation;
+		};
+		B17305221DAAEDDE00300EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 08819F1D1CD51F9B00EFD938;
+			remoteInfo = SwiftLocationTests;
+		};
+		B17305241DAAEDDE00300EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 213F85081D61C7FC00835DCA;
+			remoteInfo = SwiftLocationDemo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +77,17 @@
 		B15FFD5B1D8DFFCC000E53B6 /* SchoolBusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SchoolBusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBusUITests.swift; sourceTree = "<group>"; };
 		B15FFD611D8DFFCC000E53B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B17305031DAAE9F000300EB9 /* SwiftLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftLocation.h; path = ../../SwiftLocation/SwiftLocation/SwiftLocation/SwiftLocation.h; sourceTree = "<group>"; };
+		B17305041DAAE9F000300EB9 /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Commons.swift; path = ../../SwiftLocation/src/Commons.swift; sourceTree = "<group>"; };
+		B17305071DAAEA1800300EB9 /* BeaconsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconsManager.swift; path = ../../SwiftLocation/src/BeaconsManager.swift; sourceTree = "<group>"; };
+		B17305081DAAEA1800300EB9 /* GeoRegionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeoRegionRequest.swift; path = ../../SwiftLocation/src/GeoRegionRequest.swift; sourceTree = "<group>"; };
+		B17305091DAAEA1800300EB9 /* BeaconRegionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconRegionRequest.swift; path = ../../SwiftLocation/src/BeaconRegionRequest.swift; sourceTree = "<group>"; };
+		B173050A1DAAEA1800300EB9 /* BeaconAdvertiseRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconAdvertiseRequest.swift; path = ../../SwiftLocation/src/BeaconAdvertiseRequest.swift; sourceTree = "<group>"; };
+		B17305101DAAEA5C00300EB9 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = ../../SwiftLocation/src/LocationManager.swift; sourceTree = "<group>"; };
+		B17305111DAAEA5C00300EB9 /* HeadingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeadingRequest.swift; path = ../../SwiftLocation/src/HeadingRequest.swift; sourceTree = "<group>"; };
+		B17305121DAAEA5C00300EB9 /* LocationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationRequest.swift; path = ../../SwiftLocation/src/LocationRequest.swift; sourceTree = "<group>"; };
+		B17305131DAAEA5C00300EB9 /* VisitRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VisitRequest.swift; path = ../../SwiftLocation/src/VisitRequest.swift; sourceTree = "<group>"; };
+		B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftLocation.xcodeproj; path = ../../SwiftLocation/SwiftLocation/SwiftLocation.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +121,9 @@
 				B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */,
 				B15FFD531D8DFFCC000E53B6 /* SchoolBusTests */,
 				B15FFD5E1D8DFFCC000E53B6 /* SchoolBusUITests */,
+				B17305061DAAE9F900300EB9 /* SwiftLocation */,
 				B15FFD3D1D8DFFCC000E53B6 /* Products */,
+				B17305191DAAEDDE00300EB9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,6 +166,57 @@
 				B15FFD611D8DFFCC000E53B6 /* Info.plist */,
 			);
 			path = SchoolBusUITests;
+			sourceTree = "<group>";
+		};
+		B17305061DAAE9F900300EB9 /* SwiftLocation */ = {
+			isa = PBXGroup;
+			children = (
+				B17305031DAAE9F000300EB9 /* SwiftLocation.h */,
+				B17305041DAAE9F000300EB9 /* Commons.swift */,
+				B173050F1DAAEA2F00300EB9 /* Beacon Services */,
+				B17305181DAAEA7100300EB9 /* Location Services */,
+			);
+			name = SwiftLocation;
+			sourceTree = "<group>";
+		};
+		B173050F1DAAEA2F00300EB9 /* Beacon Services */ = {
+			isa = PBXGroup;
+			children = (
+				B17305071DAAEA1800300EB9 /* BeaconsManager.swift */,
+				B17305081DAAEA1800300EB9 /* GeoRegionRequest.swift */,
+				B17305091DAAEA1800300EB9 /* BeaconRegionRequest.swift */,
+				B173050A1DAAEA1800300EB9 /* BeaconAdvertiseRequest.swift */,
+			);
+			name = "Beacon Services";
+			sourceTree = "<group>";
+		};
+		B17305181DAAEA7100300EB9 /* Location Services */ = {
+			isa = PBXGroup;
+			children = (
+				B17305101DAAEA5C00300EB9 /* LocationManager.swift */,
+				B17305111DAAEA5C00300EB9 /* HeadingRequest.swift */,
+				B17305121DAAEA5C00300EB9 /* LocationRequest.swift */,
+				B17305131DAAEA5C00300EB9 /* VisitRequest.swift */,
+			);
+			name = "Location Services";
+			sourceTree = "<group>";
+		};
+		B17305191DAAEDDE00300EB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B173051B1DAAEDDE00300EB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B17305211DAAEDDE00300EB9 /* SwiftLocation.framework */,
+				B17305231DAAEDDE00300EB9 /* SwiftLocationTests.xctest */,
+				B17305251DAAEDDE00300EB9 /* SwiftLocationDemo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,6 +317,12 @@
 			mainGroup = B15FFD331D8DFFCC000E53B6;
 			productRefGroup = B15FFD3D1D8DFFCC000E53B6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B173051B1DAAEDDE00300EB9 /* Products */;
+					ProjectRef = B173051A1DAAEDDE00300EB9 /* SwiftLocation.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B15FFD3B1D8DFFCC000E53B6 /* SchoolBus */,
@@ -231,6 +331,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B17305211DAAEDDE00300EB9 /* SwiftLocation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftLocation.framework;
+			remoteRef = B17305201DAAEDDE00300EB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B17305231DAAEDDE00300EB9 /* SwiftLocationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftLocationTests.xctest;
+			remoteRef = B17305221DAAEDDE00300EB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B17305251DAAEDDE00300EB9 /* SwiftLocationDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = SwiftLocationDemo.app;
+			remoteRef = B17305241DAAEDDE00300EB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B15FFD3A1D8DFFCC000E53B6 /* Resources */ = {
@@ -264,8 +388,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B17305171DAAEA5C00300EB9 /* VisitRequest.swift in Sources */,
+				B17305161DAAEA5C00300EB9 /* LocationRequest.swift in Sources */,
+				B173050C1DAAEA1800300EB9 /* GeoRegionRequest.swift in Sources */,
 				B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */,
+				B17305151DAAEA5C00300EB9 /* HeadingRequest.swift in Sources */,
+				B173050B1DAAEA1800300EB9 /* BeaconsManager.swift in Sources */,
+				B173050E1DAAEA1800300EB9 /* BeaconAdvertiseRequest.swift in Sources */,
+				B17305141DAAEA5C00300EB9 /* LocationManager.swift in Sources */,
+				B17305051DAAE9F000300EB9 /* Commons.swift in Sources */,
 				B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */,
+				B173050D1DAAEA1800300EB9 /* BeaconRegionRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
