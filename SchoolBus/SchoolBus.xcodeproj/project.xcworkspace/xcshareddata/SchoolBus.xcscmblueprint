@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "E9DA051E1DC9A087EDCC53623CF02E9CB8D473BF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "E9DA051E1DC9A087EDCC53623CF02E9CB8D473BF" : 9223372036854775807,
+    "677E8E9414FADC8C089A94C6134023AA45E42A2C" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A14947E7-DA76-4B2C-AEEB-3AD341E05960",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "E9DA051E1DC9A087EDCC53623CF02E9CB8D473BF" : "Schoolbus\/",
+    "677E8E9414FADC8C089A94C6134023AA45E42A2C" : "SwiftLocation\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SchoolBus",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SchoolBus\/SchoolBus.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/malcommac\/SwiftLocation.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "677E8E9414FADC8C089A94C6134023AA45E42A2C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pauldfreeman\/Schoolbus.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E9DA051E1DC9A087EDCC53623CF02E9CB8D473BF"
+    }
+  ]
+}
