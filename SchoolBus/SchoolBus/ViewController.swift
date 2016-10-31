@@ -9,42 +9,93 @@
 import UIKit
 import CoreLocation
 import CoreBluetooth
+import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     // MARK: Properties
-    
-    @IBOutlet weak var btnStart: UIButton!
-    @IBOutlet weak var btnStop: UIButton!
-    @IBOutlet weak var txtLog: UITextView!
-    
+
+    @IBOutlet weak var lblLong: UILabel!
+    @IBOutlet weak var lblHorizAcc: UILabel!
+    @IBOutlet weak var lblAltitude: UILabel!
+    @IBOutlet weak var lblVertAcc: UILabel!
+    @IBOutlet weak var lblLat: UILabel!
+    @IBOutlet weak var lblDistance: UILabel!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var lblSpeed: UILabel!
+   
+    var locationManager: CLLocationManager = CLLocationManager()
+    var startLocation: CLLocation!
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-    
-    // MARK: Actions
-    
-    @IBAction func btnStartClicked(_ sender: UIButton) {
-        txtLog.text = "Start locating\n" + txtLog.text
 
-        debugPrint("hello there")
-        var r = Location.getLocation(withAccuracy: .any, frequency: .oneShot, timeout: nil, onSuccess: { (loc) in
-            debugPrint("loc \(loc)")
-        }) { (last, err) in
-            print("err \(err)")
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.distanceFilter = 20
+        locationManager.startUpdatingLocation()
+        startLocation = nil
+        
+        mapView.delegate = self
+   
+        let region = MKCoordinateRegionMakeWithDistance((locationManager.location?.coordinate)!,500, 500)
+        mapView.setRegion(region, animated: true)
+
+    }
+    
+    internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
+    {
+ 
+        let latestLocation: CLLocation = locations[locations.count - 1]
+        
+        lblLat.text = String(format: "%.4f",
+                               latestLocation.coordinate.latitude)
+        lblLong.text = String(format: "%.4f",
+                                latestLocation.coordinate.longitude)
+        lblHorizAcc.text = String(format: "%.4f",
+                                         latestLocation.horizontalAccuracy)
+        lblAltitude.text = String(format: "%.4f",
+                               latestLocation.altitude)
+        lblVertAcc.text = String(format: "%.4f",
+                                       latestLocation.verticalAccuracy)
+        
+        var speed: CLLocationSpeed = CLLocationSpeed()
+        speed = locationManager.location!.speed
+        lblSpeed.text = String(format: "%.0f mph", speed * 2.23693629)
+        
+        if startLocation == nil {
+            startLocation = latestLocation
         }
-        r.onAuthorizationDidChange = { newStatus in
-            debugPrint("New status \(newStatus)")
-        }
-        debugPrint("done!!!!")
+        
+        let distanceBetween: CLLocationDistance =
+            latestLocation.distance(from: startLocation)
+        
+        lblDistance.text = String(format: "%.2f", distanceBetween)
+        
+        startLocation = latestLocation
+    }
+    
+    
+    internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
+    {
+        debugPrint("Error:" + error.localizedDescription)
+        
+    }
+    
+    internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
+    {
+        mapView.centerCoordinate = userLocation.coordinate
     }
 
-
-    @IBAction func btnStopClicked(_ sender: UIButton) {
-        txtLog.text = "Stopping locating\n" + txtLog.text
-    }
+    
 }
 
