@@ -7,15 +7,58 @@
 //
 
 import UIKit
+import PubNub
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
 
     var window: UIWindow?
 
-
+    // Stores reference on PubNub client to make sure what it won't be released.
+    var client: PubNub!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        self.client.logger.enabled = true
+        self.client.logger.setLogLevel(PNLogLevel.PNVerboseLogLevel.rawValue)
+        
+        
+        // Initialize and configure PubNub client instance
+        let configuration = PNConfiguration(publishKey: "pub-c-e0910a1e-fd8e-45ff-b32a-e393642e68bd",
+                                            subscribeKey: "sub-c-5b3a15ec-a003-11e6-96cb-02ee2ddab7fe")
+        
+        self.client = PubNub.clientWithConfiguration(configuration)
+        
+        
+        self.client.addListener(self)
+        
+        // Subscribe to demo channel with presence observation
+        self.client.subscribeToChannels(["demo sub"], withPresence: true)
+        
+        self.client.publish("Hello from the PubNub Swift SDK", toChannel: "demo pub ",
+                       compressed: false, withCompletion: { (status) in
+                        
+                        if !status.isError {
+                            debugPrint("success")
+                            // Message successfully published to specified channel.
+                        }
+                        else{
+                            debugPrint("error")
+                            debugPrint(status.description)
+                            debugPrint(status.debugDescription)
+                            
+                            /**
+                             Handle message publish error. Check 'category' property to find
+                             out possible reason because of which request did fail.
+                             Review 'errorData' property (which has PNErrorData data type) of status
+                             object to get additional information about issue.
+                             
+                             Request can be resent using: status.retry()
+                             */
+                        }
+        })
+        
         return true
     }
 
@@ -40,6 +83,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    
+    
 
 
 }

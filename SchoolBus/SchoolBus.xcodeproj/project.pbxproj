@@ -14,7 +14,9 @@
 		B15FFD4A1D8DFFCC000E53B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */; };
 		B15FFD551D8DFFCC000E53B6 /* SchoolBusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD541D8DFFCC000E53B6 /* SchoolBusTests.swift */; };
 		B15FFD601D8DFFCC000E53B6 /* SchoolBusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */; };
+		B1B8EC621DC8826B0052DBD8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B1B8EC611DC8826B0052DBD8 /* Podfile */; };
 		DA4817251DC776DD0078E300 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4817241DC776DD0078E300 /* MapKit.framework */; };
+		DBCA6891097317A4E2F6C7D9 /* Pods_SchoolBus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,7 +36,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B16314581DC7F2DF0030195E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolBus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.release.xcconfig"; sourceTree = "<group>"; };
+		6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.debug.xcconfig"; sourceTree = "<group>"; };
 		B15FFD3C1D8DFFCC000E53B6 /* SchoolBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B15FFD411D8DFFCC000E53B6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +66,7 @@
 		B15FFD5B1D8DFFCC000E53B6 /* SchoolBusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SchoolBusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBusUITests.swift; sourceTree = "<group>"; };
 		B15FFD611D8DFFCC000E53B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1B8EC611DC8826B0052DBD8 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		DA4817241DC776DD0078E300 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -57,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA4817251DC776DD0078E300 /* MapKit.framework in Frameworks */,
+				DBCA6891097317A4E2F6C7D9 /* Pods_SchoolBus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,11 +100,13 @@
 		B15FFD331D8DFFCC000E53B6 = {
 			isa = PBXGroup;
 			children = (
+				B1B8EC611DC8826B0052DBD8 /* Podfile */,
 				B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */,
 				B15FFD531D8DFFCC000E53B6 /* SchoolBusTests */,
 				B15FFD5E1D8DFFCC000E53B6 /* SchoolBusUITests */,
 				B15FFD3D1D8DFFCC000E53B6 /* Products */,
 				DA4817231DC776DC0078E300 /* Frameworks */,
+				D4C04EE969E86957E52F1C69 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,10 +151,20 @@
 			path = SchoolBusUITests;
 			sourceTree = "<group>";
 		};
+		D4C04EE969E86957E52F1C69 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */,
+				286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		DA4817231DC776DC0078E300 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				DA4817241DC776DD0078E300 /* MapKit.framework */,
+				02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,9 +176,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B15FFD641D8DFFCC000E53B6 /* Build configuration list for PBXNativeTarget "SchoolBus" */;
 			buildPhases = (
+				B623868AD6606FDEF4E46D48 /* [CP] Check Pods Manifest.lock */,
 				B15FFD381D8DFFCC000E53B6 /* Sources */,
 				B15FFD391D8DFFCC000E53B6 /* Frameworks */,
 				B15FFD3A1D8DFFCC000E53B6 /* Resources */,
+				B16314581DC7F2DF0030195E /* Embed Frameworks */,
+				25BFFBFC60296EB1D6426885 /* [CP] Embed Pods Frameworks */,
+				1607FC59AC72D698C58F7F05 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -252,6 +288,7 @@
 			files = (
 				B15FFD4A1D8DFFCC000E53B6 /* LaunchScreen.storyboard in Resources */,
 				B15FFD471D8DFFCC000E53B6 /* Assets.xcassets in Resources */,
+				B1B8EC621DC8826B0052DBD8 /* Podfile in Resources */,
 				B15FFD451D8DFFCC000E53B6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +308,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1607FC59AC72D698C58F7F05 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		25BFFBFC60296EB1D6426885 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B623868AD6606FDEF4E46D48 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B15FFD381D8DFFCC000E53B6 /* Sources */ = {
@@ -425,11 +510,16 @@
 		};
 		B15FFD651D8DFFCC000E53B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Airship",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = PDF.SchoolBus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -438,11 +528,16 @@
 		};
 		B15FFD661D8DFFCC000E53B6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Airship",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = PDF.SchoolBus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

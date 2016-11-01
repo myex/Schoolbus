@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import MapKit
+import PubNub
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -82,6 +83,36 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         lblDistance.text = String(format: "%.2f", distanceBetween)
         
         startLocation = latestLocation
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var client: PubNub
+        client = appDelegate.client
+        
+        
+        client.publish("Hello from the PubNub Swift SDK", toChannel: "my_channel",
+                            compressed: false, withCompletion: { (status) in
+                                
+                                if !status.isError {
+                                    debugPrint("success")
+                                    // Message successfully published to specified channel.
+                                }
+                                else{
+                                    debugPrint("error")
+                                    debugPrint(status.description)
+                                    debugPrint(status.debugDescription)
+
+                                    /**
+                                     Handle message publish error. Check 'category' property to find
+                                     out possible reason because of which request did fail.
+                                     Review 'errorData' property (which has PNErrorData data type) of status
+                                     object to get additional information about issue.
+                                     
+                                     Request can be resent using: status.retry()
+                                     */
+                                }
+        })
+        
+        
     }
     
     
