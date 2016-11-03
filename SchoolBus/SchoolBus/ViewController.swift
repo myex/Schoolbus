@@ -11,6 +11,7 @@ import CoreLocation
 import CoreBluetooth
 import MapKit
 import AblyRealtime
+import Foundation
 
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
@@ -26,6 +27,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var lblSpeed: UILabel!
    
+    var client: ARTRealtime!
+    
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
 
@@ -43,15 +46,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.distanceFilter = 20
+        //locationManager.distanceFilter = 0
         locationManager.startUpdatingLocation()
         startLocation = nil
         
         mapView.delegate = self
+        
    
         let region = MKCoordinateRegionMakeWithDistance((locationManager.location?.coordinate)!,500, 500)
         mapView.setRegion(region, animated: true)
 
+        client = ARTRealtime(key: "QGOsVA.UnM4VQ:YuOO9DIWTgs2BcPZ")
+        
     }
     
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
@@ -61,16 +67,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         
         
-        lblLat.text = String(format: "%.4f",
-                               latestLocation.coordinate.latitude)
-        lblLong.text = String(format: "%.4f",
-                                latestLocation.coordinate.longitude)
-        lblHorizAcc.text = String(format: "%.4f",
-                                         latestLocation.horizontalAccuracy)
-        lblAltitude.text = String(format: "%.4f",
-                               latestLocation.altitude)
-        lblVertAcc.text = String(format: "%.4f",
-                                       latestLocation.verticalAccuracy)
+        lblLat.text = String(format: "%.6f", latestLocation.coordinate.latitude)
+        lblLong.text = String(format: "%.6f",latestLocation.coordinate.longitude)
+        lblHorizAcc.text = String(format: "%.6f",latestLocation.horizontalAccuracy)
+        lblAltitude.text = String(format: "%.6f",latestLocation.altitude)
+        lblVertAcc.text = String(format: "%.6f", latestLocation.verticalAccuracy)
         
         var speed: CLLocationSpeed = CLLocationSpeed()
         speed = locationManager.location!.speed
@@ -87,16 +88,28 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         startLocation = latestLocation
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var client: ARTRealtime
-        client = appDelegate.client
-        let channel = client.channels.get("Position")
-        channel.publish("hello", data: "world")
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "MMMM dd yyyy hh:mm:ss.SSS"
+        let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
         
-    
+        let now = dateformatter.string(from: NSDate() as Date)
+        //dateformatter.string(from: NSDate.date())
+
+        //build up the location information to publish
+        var locationString = ""
+        locationString = locationString + String(format: "%.6f",latestLocation.coordinate.latitude)
+        locationString = locationString + "|" + String(format: "%.6f",latestLocation.coordinate.longitude)
+        locationString = locationString + "|" + String(format: "%.6f",latestLocation.horizontalAccuracy)
+        locationString = locationString + "|" + String(format: "%.0f mph", speed * 2.23693629)
+        locationString = locationString + "|" + locationTimeStamp
+        locationString = locationString + "|" + now
+        
+        //publish to the channel
+        let channel = client.channels.get("Position")
+        channel.publish("Location", data: locationString)
+        debugPrint(locationString)
         
     }
-    
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
@@ -106,9 +119,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
     {
+        debugPrint("mapview recentred")
         mapView.centerCoordinate = userLocation.coordinate
     }
 
-    
 }
 

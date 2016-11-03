@@ -7,18 +7,19 @@
 //
 
 import UIKit
-import AblyRealtime
+//import AblyRealtime
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate     {
 
     var window: UIWindow?
-    var client: ARTRealtime!
+    //var client: ARTRealtime!
 
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
         // Override point for customization after application launch.
-        self.client = ARTRealtime(key: "QGOsVA.UnM4VQ:YuOO9DIWTgs2BcPZ")
+        //self.client = ARTRealtime(key: "QGOsVA.UnM4VQ:YuOO9DIWTgs2BcPZ")
         return true
     }
 
