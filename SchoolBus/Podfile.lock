@@ -1,14 +1,18 @@
 PODS:
-  - PubNub (4.5.4):
-    - PubNub/Core (= 4.5.4)
-  - PubNub/Core (4.5.4)
+  - AblyRealtime (0.8.6):
+    - msgpack (= 0.1.8)
+    - SocketRocket (= 0.5.1)
+  - msgpack (0.1.8)
+  - SocketRocket (0.5.1)
 
 DEPENDENCIES:
-  - PubNub (~> 4.1)
+  - AblyRealtime
 
 SPEC CHECKSUMS:
-  PubNub: 5b1b16bcd6fcc4d57191c107fc63ce779f62b59c
+  AblyRealtime: 40f20d4d17b6c28238034221fd5e344db3b5235f
+  msgpack: 97491d2ea799408f4694f2c7d7fd79baf77853dd
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
 
-PODFILE CHECKSUM: 4ad443fb1e74403a00bfaed221a360355e5a1eb8
+PODFILE CHECKSUM: 752c8e90471bdee525e122dd32516de2e845ed6d
 
 COCOAPODS: 1.1.1

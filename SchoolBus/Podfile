@@ -3,5 +3,5 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'SchoolBus' do
-pod "PubNub", "~> 4.1"
+pod "AblyRealtime"
 end
