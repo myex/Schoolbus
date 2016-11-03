@@ -53,6 +53,7 @@
 		02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolBus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.release.xcconfig"; sourceTree = "<group>"; };
 		6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.debug.xcconfig"; sourceTree = "<group>"; };
+		B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		B15FFD3C1D8DFFCC000E53B6 /* SchoolBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B15FFD411D8DFFCC000E53B6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 		B15FFD331D8DFFCC000E53B6 = {
 			isa = PBXGroup;
 			children = (
+				B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */,
 				B1B8EC611DC8826B0052DBD8 /* Podfile */,
 				B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */,
 				B15FFD531D8DFFCC000E53B6 /* SchoolBusTests */,

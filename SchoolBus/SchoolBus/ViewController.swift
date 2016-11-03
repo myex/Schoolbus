@@ -10,7 +10,8 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import MapKit
-import PubNub
+import AblyRealtime
+
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -27,8 +28,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
    
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
-    
-    override func didReceiveMemoryWarning() {
+
+        override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -58,6 +59,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
  
         let latestLocation: CLLocation = locations[locations.count - 1]
         
+        
+        
         lblLat.text = String(format: "%.4f",
                                latestLocation.coordinate.latitude)
         lblLong.text = String(format: "%.4f",
@@ -85,33 +88,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         startLocation = latestLocation
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var client: PubNub
+        var client: ARTRealtime
         client = appDelegate.client
+        let channel = client.channels.get("Position")
+        channel.publish("hello", data: "world")
         
-        
-        client.publish("Hello from the PubNub Swift SDK", toChannel: "my_channel",
-                            compressed: false, withCompletion: { (status) in
-                                
-                                if !status.isError {
-                                    debugPrint("success")
-                                    // Message successfully published to specified channel.
-                                }
-                                else{
-                                    debugPrint("error")
-                                    debugPrint(status.description)
-                                    debugPrint(status.debugDescription)
-
-                                    /**
-                                     Handle message publish error. Check 'category' property to find
-                                     out possible reason because of which request did fail.
-                                     Review 'errorData' property (which has PNErrorData data type) of status
-                                     object to get additional information about issue.
-                                     
-                                     Request can be resent using: status.retry()
-                                     */
-                                }
-        })
-        
+    
         
     }
     
