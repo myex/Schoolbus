@@ -27,6 +27,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var lblSpeed: UILabel!
     @IBOutlet weak var lblDelay: UILabel!
+    @IBOutlet weak var lblPosTime: UILabel!
     
     //declare this property where it won't go out of scope relative to your listener
     let reachability = Reachability()!
@@ -67,8 +68,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         reachability.whenReachable = { reachability in
             if reachability.isReachableViaWiFi {
                     print("Reachable via WiFi")
+                    self.view.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
                 } else {
                     print("Reachable via Cellular")
+                    self.view.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
                 }
             self.transmit = true
         }
@@ -76,6 +79,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         reachability.whenUnreachable = { reachability in
             print("Not reachable")
             self.transmit = false
+            self.view.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         }
         do {
             try reachability.startNotifier()
@@ -87,6 +91,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
+        
  
         let latestLocation: CLLocation = locations[locations.count - 1]
         
@@ -112,8 +117,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         startLocation = latestLocation
         
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "MMMM dd yyyy hh:mm:ss.SSS"
+        dateformatter.dateFormat = "MMM dd yyyy hh:mm:ss.SSS"
         let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
+        lblPosTime.text = locationTimeStamp
         
         let nowDate: Date = Date()
         let now = dateformatter.string(from: nowDate)
@@ -130,10 +136,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //publish to the channel
         if (transmit) {
             let channel = client.channels.get("Position")
-            channel.publish("Location", data: locationString)
-            debugPrint(locationString)
-            transmitDate = Date()
-            lblDelay.text = "Real time"
+
+            do {
+                try
+                    channel.publish("Location", data: locationString)
+                    debugPrint(locationString)
+                    transmitDate = Date()
+                    lblDelay.text = "Real time"
+            } catch  {
+                debugPrint("error")
+            }
+     
         } else {
             debugPrint("position not sent, no signal")
             let delay: TimeInterval = Date().timeIntervalSince(transmitDate)
