@@ -3,16 +3,19 @@ PODS:
     - msgpack (= 0.1.8)
     - SocketRocket (= 0.5.1)
   - msgpack (0.1.8)
+  - ReachabilitySwift (3)
   - SocketRocket (0.5.1)
 
 DEPENDENCIES:
   - AblyRealtime
+  - ReachabilitySwift (~> 3)
 
 SPEC CHECKSUMS:
   AblyRealtime: 40f20d4d17b6c28238034221fd5e344db3b5235f
   msgpack: 97491d2ea799408f4694f2c7d7fd79baf77853dd
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
 
-PODFILE CHECKSUM: 752c8e90471bdee525e122dd32516de2e845ed6d
+PODFILE CHECKSUM: df7c0218e48bf98a84064656e65d7452e705d7d0
 
 COCOAPODS: 1.1.1

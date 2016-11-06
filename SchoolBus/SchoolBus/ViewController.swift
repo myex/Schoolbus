@@ -12,7 +12,7 @@ import CoreBluetooth
 import MapKit
 import AblyRealtime
 import Foundation
-
+import ReachabilitySwift
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -26,7 +26,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var lblDistance: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var lblSpeed: UILabel!
-   
+    @IBOutlet weak var lblDelay: UILabel!
+    
+    //declare this property where it won't go out of scope relative to your listener
+    let reachability = Reachability()!
+    var transmit: Bool = false
+    var transmitDate: Date!
+    
     var client: ARTRealtime!
     
     var locationManager: CLLocationManager = CLLocationManager()
@@ -41,7 +47,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -57,15 +63,32 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.setRegion(region, animated: true)
 
         client = ARTRealtime(key: "QGOsVA.UnM4VQ:YuOO9DIWTgs2BcPZ")
-        
-    }
+      
+        reachability.whenReachable = { reachability in
+            if reachability.isReachableViaWiFi {
+                    print("Reachable via WiFi")
+                } else {
+                    print("Reachable via Cellular")
+                }
+            self.transmit = true
+        }
     
+        reachability.whenUnreachable = { reachability in
+            print("Not reachable")
+            self.transmit = false
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    
+    }
+
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
  
         let latestLocation: CLLocation = locations[locations.count - 1]
-        
-        
         
         lblLat.text = String(format: "%.6f", latestLocation.coordinate.latitude)
         lblLong.text = String(format: "%.6f",latestLocation.coordinate.longitude)
@@ -92,9 +115,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         dateformatter.dateFormat = "MMMM dd yyyy hh:mm:ss.SSS"
         let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
         
-        let now = dateformatter.string(from: NSDate() as Date)
-        //dateformatter.string(from: NSDate.date())
-
+        let nowDate: Date = Date()
+        let now = dateformatter.string(from: nowDate)
+  
         //build up the location information to publish
         var locationString = ""
         locationString = locationString + String(format: "%.6f",latestLocation.coordinate.latitude)
@@ -105,9 +128,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationString = locationString + "|" + now
         
         //publish to the channel
-        let channel = client.channels.get("Position")
-        channel.publish("Location", data: locationString)
-        debugPrint(locationString)
+        if (transmit) {
+            let channel = client.channels.get("Position")
+            channel.publish("Location", data: locationString)
+            debugPrint(locationString)
+            transmitDate = Date()
+            lblDelay.text = "Real time"
+        } else {
+            debugPrint("position not sent, no signal")
+            let delay: TimeInterval = Date().timeIntervalSince(transmitDate)
+            lblDelay.text = String(format: "%.4f", delay)
+        }
+        
+        
         
     }
     
@@ -119,7 +152,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
     {
-        debugPrint("mapview recentred")
         mapView.centerCoordinate = userLocation.coordinate
     }
 
