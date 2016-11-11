@@ -44,21 +44,43 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // Dispose of any resources that can be recreated.
     }
 
-
+    
+    internal func sendHeartbeat()
+    {
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "MMM dd yyyy hh:mm:ss"
+        let hearbeatTimeStamp = dateformatter.string(from: Date())
+        
+        //publish to the channel
+        if (transmit) {
+            let channel = client.channels.get("Heartbeat")
+            channel.publish("Heartbeat", data: hearbeatTimeStamp )
+                debugPrint("heartbeat" + hearbeatTimeStamp)
+        } else {
+            debugPrint("could not heartbeat, no signal")
+        }
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
-        //locationManager.distanceFilter = 0
+        
+        locationManager.distanceFilter = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 50
+        locationManager.allowDeferredLocationUpdates(untilTraveled: 50, timeout: 300)
         locationManager.startUpdatingLocation()
+        
         startLocation = nil
+        Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(sendHeartbeat), userInfo: nil, repeats: true)
         
         mapView.delegate = self
-        
    
         let region = MKCoordinateRegionMakeWithDistance((locationManager.location?.coordinate)!,500, 500)
         mapView.setRegion(region, animated: true)
