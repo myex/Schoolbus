@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B105989F1DDA5C0500B352D3 /* PositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105989E1DDA5C0500B352D3 /* PositionModel.swift */; };
 		B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */; };
 		B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD411D8DFFCC000E53B6 /* ViewController.swift */; };
 		B15FFD451D8DFFCC000E53B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD431D8DFFCC000E53B6 /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolBus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.release.xcconfig"; sourceTree = "<group>"; };
 		6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.debug.xcconfig"; sourceTree = "<group>"; };
+		B105989E1DDA5C0500B352D3 /* PositionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionModel.swift; sourceTree = "<group>"; };
 		B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		B15FFD3C1D8DFFCC000E53B6 /* SchoolBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				B15FFD461D8DFFCC000E53B6 /* Assets.xcassets */,
 				B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */,
 				B15FFD4B1D8DFFCC000E53B6 /* Info.plist */,
+				B105989E1DDA5C0500B352D3 /* PositionModel.swift */,
 			);
 			path = SchoolBus;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B105989F1DDA5C0500B352D3 /* PositionModel.swift in Sources */,
 				B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */,
 				B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */,
 			);
