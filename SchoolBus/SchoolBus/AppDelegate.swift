@@ -7,18 +7,33 @@
 //
 
 import UIKit
-//import AblyRealtime
+import XCGLogger
+
+let logXC = XCGLogger.default
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate     {
 
+  
+    
     var window: UIWindow?
-    //var client: ARTRealtime!
 
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy-MM-dd--HH-mm-ss"
+        let nowDate: Date = Date()
+        let now = dateformatter.string(from: nowDate)
+        
+        let file = now + "_Schoolbus.log" //this is the file. we will write to and read from it
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        let path = dir?.appendingPathComponent(file)
+        
+        
         // Override point for customization after application launch.
+        logXC.setup(level: .debug, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: path, fileLevel: .debug)
+        logXC.debug("Started logging")
         return true
     }
 

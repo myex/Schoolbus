@@ -5,17 +5,22 @@ PODS:
   - msgpack (0.1.8)
   - ReachabilitySwift (3)
   - SocketRocket (0.5.1)
+  - XCGLogger (4.0.0):
+    - XCGLogger/Core (= 4.0.0)
+  - XCGLogger/Core (4.0.0)
 
 DEPENDENCIES:
   - AblyRealtime
   - ReachabilitySwift (~> 3)
+  - XCGLogger (~> 4.0.0)
 
 SPEC CHECKSUMS:
   AblyRealtime: 40f20d4d17b6c28238034221fd5e344db3b5235f
   msgpack: 97491d2ea799408f4694f2c7d7fd79baf77853dd
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: df7c0218e48bf98a84064656e65d7452e705d7d0
+PODFILE CHECKSUM: 63db2fe42d9a7a3c1e608b1093fe17189eca0f55
 
 COCOAPODS: 1.1.1

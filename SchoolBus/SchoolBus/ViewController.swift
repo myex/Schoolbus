@@ -13,6 +13,8 @@ import MapKit
 import AblyRealtime
 import Foundation
 import ReachabilitySwift
+import XCGLogger
+
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, PositionModelDelegate {
     
@@ -30,97 +32,49 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var lblPosTime: UILabel!
     
     //declare this property where it won't go out of scope relative to your listener
-    //let reachability = Reachability()!
-    //var transmit: Bool = false
     var transmitDate: Date!
 
-    
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
     var model: PositionModel!
+ 
+    override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
 
-        override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-/*
-    internal func sendHeartbeat()
-    {
-        
-        let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
-        let hearbeatTimeStamp = dateformatter.string(from: Date())
-        
-        //publish to the channel
-        if (transmit) {
-            let channel = client.channels.get("Heartbeat")
-            channel.publish("Heartbeat", data: hearbeatTimeStamp )
-                debugPrint("heartbeat" + hearbeatTimeStamp)
-        } else {
-            debugPrint("could not heartbeat, no signal")
-        }
-        
-    }
-*/
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.activityType = CLActivityType.automotiveNavigation
         
         locationManager.distanceFilter = kCLLocationAccuracyBest
-        //locationManager.distanceFilter = 10
-        //locationManager.allowDeferredLocationUpdates(untilTraveled: 10, timeout: 30)
+        locationManager.distanceFilter = 5
         locationManager.startUpdatingLocation()
         
         startLocation = nil
-        //Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(sendHeartbeat), userInfo: nil, repeats: true)
-        
         mapView.delegate = self
    
         let region = MKCoordinateRegionMakeWithDistance((locationManager.location?.coordinate)!,500, 500)
         mapView.setRegion(region, animated: true)
 
-        //initNetwork()
         
         self.model = PositionModel(clientId: "1")
         self.model.delegate = self
         self.model.connect()
-      
-
-    
+        
     }
-/*
-    internal func initNetwork()
+
+    internal func sendHeartbeat()
     {
-    
-        reachability.whenReachable = { reachability in
-            if reachability.isReachableViaWiFi {
-                self.view.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
-            } else {
-                self.view.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
-            }
-            self.transmit = true
-        }
-        
-        reachability.whenUnreachable = { reachability in
-            self.transmit = false
-            self.view.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-            
-        }
-        
-        do {
-            try reachability.startNotifier()
-        } catch {
-            self.view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        }
-
+        model.publishMessage("HEARTBEAT")
     }
-*/
     
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
@@ -132,9 +86,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         lblAltitude.text = String(format: "%.6f",latestLocation.altitude)
         lblVertAcc.text = String(format: "%.6f", latestLocation.verticalAccuracy)
         
+        //Get speed - note if horitontal accurancy is greater than 50 it seems very innacurate.
         var speed: CLLocationSpeed = CLLocationSpeed()
         speed = locationManager.location!.speed
-        lblSpeed.text = String(format: "%.0f mph", speed * 2.23693629)
+        var spd: Double = speed
+        if (latestLocation.horizontalAccuracy > 50){
+            spd = 0
+        }
+        
+        lblSpeed.text = String(format: "%.0f mph", spd * 2.23693629)
         
         if startLocation == nil {
             startLocation = latestLocation
@@ -148,7 +108,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         startLocation = latestLocation
         
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
         lblPosTime.text = locationTimeStamp
         
@@ -160,31 +120,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationString = locationString + String(format: "%.6f",latestLocation.coordinate.latitude)
         locationString = locationString + "|" + String(format: "%.6f",latestLocation.coordinate.longitude)
         locationString = locationString + "|" + String(format: "%.6f",latestLocation.horizontalAccuracy)
-        locationString = locationString + "|" + String(format: "%.6f", speed * 2.23693629)
+        locationString = locationString + "|" + String(format: "%.6f", spd * 2.23693629)
         locationString = locationString + "|" + locationTimeStamp
         locationString = locationString + "|" + now
         
         //publish to the channel
-        //if (transmit)
-        //{
-            model.publishMessage(locationString)
-            debugPrint("*** Attempted to transmit " + locationString)
-            transmitDate = Date()
-            lblDelay.text = "Real time"
-        //} else
-        //{
-        //    let delay: TimeInterval = Date().timeIntervalSince(transmitDate)
-        //    lblDelay.text = String(format: "%.4f", delay)
-        //}
-        
-        
+        model.publishMessage(locationString)
+        logXC.debug("Attempted to transmit " + locationString)
+        transmitDate = Date()
+        lblDelay.text = "Real time"
         
     }
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
-        debugPrint("*** locationManager Error:" + error.localizedDescription)
-        
+        logXC.debug("locationManager Error:" + error.localizedDescription)
     }
     
     internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
@@ -196,34 +146,53 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
 extension PositionModelDelegate {
     func positionModel(_ positionModel: PositionModel, connectionStateChanged: ARTConnectionStateChange) {
-        
+        if (connectionStateChanged.current == ARTRealtimeConnectionState.closed)
+        {
+        }
+        logXC.debug("positionModel connectionstatechanged ")
     }
     
     func positionModel(_ positionModel: PositionModel, didReceiveError error: ARTErrorInfo) {
-        debugPrint("*** positionModel Error " + error.message)
+        logXC.debug("positionModel Error " + error.message)
     }
     
     func positionModel(_ positionModel: PositionModel, didReceiveMessage message: ARTMessage) {
         let s: String = message.data as! String
-        debugPrint("*** positionModel Received message " + s)
+        logXC.debug("positionModel Received message " + s)
     }
     
     func positionModelDidFinishSendingMessage(_ positionModel: PositionModel) {
-        debugPrint("*** positionModelDidFinishSendingMessage FinishedSendingMessage")
-    }
-    
-    func positionModelLoadingHistory(_ positionModel: PositionModel) {
-        debugPrint ("*** positionModelLoadingHistory...")
-        //self.clearMessages()
-    }
-    
-    func positionModel(_ positionModel: PositionModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
-        let s: String = String(messages.count)
-        debugPrint("*** positionModel historydidloadwithmessages " + s)
-    }
-    
-    func positionModel(_ positionModel: PositionModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
-        guard presenceMessage.action != .update else { return }
-        debugPrint("*** positionModel membersDidUpdate : members changed")
+        logXC.debug("positionModelDidFinishSendingMessage FinishedSendingMessage")
     }
 }
+
+/*
+ internal func initNetwork()
+ {
+ 
+ reachability.whenReachable = { reachability in
+ if reachability.isReachableViaWiFi {
+ self.view.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+ } else {
+ self.view.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+ }
+ self.transmit = true
+ }
+ 
+ reachability.whenUnreachable = { reachability in
+ self.transmit = false
+ self.view.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+ 
+ }
+ 
+ do {
+ try reachability.startNotifier()
+ } catch {
+ self.view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+ }
+ 
+ }
+ */
+
+
+

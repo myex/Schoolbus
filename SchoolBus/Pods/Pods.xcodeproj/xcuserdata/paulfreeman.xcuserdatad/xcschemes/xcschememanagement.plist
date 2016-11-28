@@ -7,37 +7,32 @@
 		<key>AblyRealtime.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>1</integer>
+			<false/>
 		</dict>
 		<key>Pods-SchoolBus.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>2</integer>
+			<false/>
 		</dict>
 		<key>ReachabilitySwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>3</integer>
+			<false/>
 		</dict>
 		<key>SocketRocket.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>4</integer>
+			<false/>
+		</dict>
+		<key>XCGLogger.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>msgpack.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>5</integer>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -45,27 +40,32 @@
 		<key>20606BCAEBABE93C739E57D3D6AE13DF</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
-		<key>8B770F0B97355B2E57CE333884DE1517</key>
+		<key>28186C09A276F4077F810A89B927F351</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
+		</dict>
+		<key>40728F61EA1A66B64B7FAA1F01094AAF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 		<key>A71DE39C6DC74DF260209E474303AAD0</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
-		<key>C49070163A2CF260D232B1A6BE27E4E2</key>
+		<key>B056CBD5BDBFEA1A2A41C6E2579FAE05</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 		<key>D3C96090D5500AD1E03C269284F83F81</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 	</dict>
 </dict>

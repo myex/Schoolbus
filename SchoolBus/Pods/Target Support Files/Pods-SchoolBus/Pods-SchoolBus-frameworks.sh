@@ -87,11 +87,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AblyRealtime/AblyRealtime.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ReachabilitySwift/ReachabilitySwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SocketRocket/SocketRocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XCGLogger/XCGLogger.framework"
   install_framework "$BUILT_PRODUCTS_DIR/msgpack/msgpack.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AblyRealtime/AblyRealtime.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ReachabilitySwift/ReachabilitySwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SocketRocket/SocketRocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XCGLogger/XCGLogger.framework"
   install_framework "$BUILT_PRODUCTS_DIR/msgpack/msgpack.framework"
 fi

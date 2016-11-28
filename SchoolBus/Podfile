@@ -5,4 +5,10 @@ use_frameworks!
 target 'SchoolBus' do
 pod "AblyRealtime"
 pod 'ReachabilitySwift', '~> 3'
+pod 'XCGLogger', '~> 4.0.0'
 end
+
+
+
+
+

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B056CBD5BDBFEA1A2A41C6E2579FAE05'
-               BlueprintName = 'ReachabilitySwift'
+               BlueprintIdentifier = '28186C09A276F4077F810A89B927F351'
+               BlueprintName = 'XCGLogger'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'ReachabilitySwift.framework'>
+               BuildableName = 'XCGLogger.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
