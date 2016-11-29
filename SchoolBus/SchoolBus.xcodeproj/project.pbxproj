@@ -16,6 +16,7 @@
 		B15FFD551D8DFFCC000E53B6 /* SchoolBusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD541D8DFFCC000E53B6 /* SchoolBusTests.swift */; };
 		B15FFD601D8DFFCC000E53B6 /* SchoolBusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */; };
 		B1B8EC621DC8826B0052DBD8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B1B8EC611DC8826B0052DBD8 /* Podfile */; };
+		DA0274961DEDF20300D21213 /* PositionTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0274951DEDF20300D21213 /* PositionTools.swift */; };
 		DA4817251DC776DD0078E300 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4817241DC776DD0078E300 /* MapKit.framework */; };
 		DBCA6891097317A4E2F6C7D9 /* Pods_SchoolBus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,8 @@
 		B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBusUITests.swift; sourceTree = "<group>"; };
 		B15FFD611D8DFFCC000E53B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1B8EC611DC8826B0052DBD8 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		DA0274931DED8C3C00D21213 /* SchoolBus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchoolBus.entitlements; sourceTree = "<group>"; };
+		DA0274951DEDF20300D21213 /* PositionTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionTools.swift; sourceTree = "<group>"; };
 		DA4817241DC776DD0078E300 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -106,6 +109,7 @@
 				B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */,
 				B1B8EC611DC8826B0052DBD8 /* Podfile */,
 				B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */,
+				DA0274941DEDF18800D21213 /* PositionTools */,
 				B15FFD531D8DFFCC000E53B6 /* SchoolBusTests */,
 				B15FFD5E1D8DFFCC000E53B6 /* SchoolBusUITests */,
 				B15FFD3D1D8DFFCC000E53B6 /* Products */,
@@ -127,6 +131,7 @@
 		B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */ = {
 			isa = PBXGroup;
 			children = (
+				DA0274931DED8C3C00D21213 /* SchoolBus.entitlements */,
 				B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */,
 				B15FFD411D8DFFCC000E53B6 /* ViewController.swift */,
 				B15FFD431D8DFFCC000E53B6 /* Main.storyboard */,
@@ -163,6 +168,14 @@
 				286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DA0274941DEDF18800D21213 /* PositionTools */ = {
+			isa = PBXGroup;
+			children = (
+				DA0274951DEDF20300D21213 /* PositionTools.swift */,
+			);
+			name = PositionTools;
 			sourceTree = "<group>";
 		};
 		DA4817231DC776DC0078E300 /* Frameworks */ = {
@@ -250,6 +263,9 @@
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -367,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA0274961DEDF20300D21213 /* PositionTools.swift in Sources */,
 				B105989F1DDA5C0500B352D3 /* PositionModel.swift in Sources */,
 				B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */,
 				B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */,
@@ -519,6 +536,7 @@
 			baseConfigurationReference = 6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SchoolBus/SchoolBus.entitlements;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -537,6 +555,7 @@
 			baseConfigurationReference = 286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SchoolBus/SchoolBus.entitlements;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

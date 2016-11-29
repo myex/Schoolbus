@@ -14,7 +14,8 @@ import AblyRealtime
 import Foundation
 import ReachabilitySwift
 import XCGLogger
-
+import UserNotifications
+import UserNotificationsUI //framework to customize the notification
 
 class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate, CLLocationManagerDelegate {
     
@@ -38,11 +39,9 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
     var model: PositionModel!
     var regionSet: Bool = false
     var deferringUpdates: Bool = false
-    
  
     override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-
+        super.didReceiveMemoryWarning()
     }
     
     override func viewDidLoad() {
@@ -55,9 +54,20 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         self.model = PositionModel(clientId: UIDevice.current.identifierForVendor!.uuidString)
         logXC.info("Initiating realtime model, ClientID:" + UIDevice.current.identifierForVendor!.uuidString)
         
+        //register for pubsub
         self.model.delegate = self
         self.model.connect()
+    
+        //start monitoring location updates
+        initLocationManager()
+
+        //register self as delegate for incoming notification
+        UNUserNotificationCenter.current().delegate = self
         
+    }
+    
+    internal func initLocationManager()
+    {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -66,10 +76,9 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false //when set to true - application wouldn't come out of being paused.
         locationManager.requestAlwaysAuthorization()
-
         locationManager.startUpdatingLocation()
-        
     }
+    
 
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
@@ -86,16 +95,7 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         lblHorizAcc.text = String(format: "%.6f",latestLocation.horizontalAccuracy)
         lblAltitude.text = String(format: "%.6f",latestLocation.altitude)
         lblVertAcc.text = String(format: "%.6f", latestLocation.verticalAccuracy)
-        
-        //Get speed - note if horitontal accurancy is greater than 50 it seems very innacurate.
-        var speed: CLLocationSpeed = CLLocationSpeed()
-        speed = latestLocation.speed
-        var spd: Double = speed
-        if (latestLocation.horizontalAccuracy > 50){
-            spd = 0
-        }
-        
-        lblSpeed.text = String(format: "%.0f mph", spd * 2.23693629)
+        lblSpeed.text = String(format: "%.0f mph", PositionTools.speed(latestLocation))
         
         if startLocation == nil {
             startLocation = latestLocation
@@ -107,30 +107,14 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         lblDistance.text = String(format: "%.2f", distanceBetween)
         
         startLocation = latestLocation
-        
-        let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
-        lblPosTime.text = locationTimeStamp
-        
-        let nowDate: Date = Date()
-        let now = dateformatter.string(from: nowDate)
-  
-        //build up the location information to publish
-        var locationString = ""
-        locationString = locationString + String(format: "%.6f",latestLocation.coordinate.latitude)
-        locationString = locationString + "|" + String(format: "%.6f",latestLocation.coordinate.longitude)
-        locationString = locationString + "|" + String(format: "%.6f",latestLocation.horizontalAccuracy)
-        locationString = locationString + "|" + String(format: "%.6f", spd * 2.23693629)
-        locationString = locationString + "|" + locationTimeStamp
-        locationString = locationString + "|" + now
+
+        let locationString = PositionTools.Pack(latestLocation)
         
         //publish to the channel
-        model.publishMessage(locationString)
+        model.publishLocationMessage(locationString)
         logXC.verbose("Attempted to transmit " + locationString)
         transmitDate = Date()
         lblDelay.text = "Real time"
-        
         
         if (self.deferringUpdates == false) {
             logXC.debug("Attempting to start deferring updates")
@@ -141,7 +125,6 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
             logXC.debug("Now with deferred updates")
         }
         
-        
     }
     
     internal func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
@@ -151,12 +134,12 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
     internal func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
         logXC.debug("locationManagerDidResumeLocationUpdates")
     }
-    
+
     internal func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
         logXC.debug("locationManager didFinishDeferredUpdates!!")
         logXC.debug("locationManager didFinishDeferredUpdates debugDescription" + error.debugDescription)
     }
-    
+
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
         logXC.error("locationManager Error:" + error.localizedDescription)
@@ -166,8 +149,6 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
     {
         mapView.centerCoordinate = userLocation.coordinate
     }
-
-    
 
 }
 
@@ -188,9 +169,26 @@ extension PositionModelDelegate {
         logXC.verbose("positionModel Received message " + s)
     }
     
-    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel) {
-        logXC.verbose("positionModelDidFinishSendingMessage FinishedSendingMessage")
+    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel, _ message: String) {
+        logXC.verbose("positionModelDidFinishSendingMessage FinishedSendingMessage :" + message)
     }
+}
+
+
+extension ViewController:UNUserNotificationCenterDelegate{
+    
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        logXC.debug("Tapped in notification")
+    }
+    
+    //This is key callback to present notification while the app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        logXC.debug("Notification being triggered")
+        completionHandler( [.alert,.sound,.badge])
+    }
+    
 }
 
 

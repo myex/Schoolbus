@@ -8,8 +8,10 @@
 
 import UIKit
 import XCGLogger
+import UserNotifications
 
 let logXC = XCGLogger.default
+var deviceTokenString: String = ""
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate     {
@@ -30,10 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate     {
         let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         let path = dir?.appendingPathComponent(file)
         
-        
-        // Override point for customization after application launch.
+        // Initiate logging
         logXC.setup(level: .debug, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: path, fileLevel: .debug)
         logXC.debug("Started logging")
+        
+        //Initiate Notifications
+        registerForPushNotifications(application: application)
        
         return true
     }
@@ -60,9 +64,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate     {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    
-    
+    func registerForPushNotifications(application: UIApplication) {
+        
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+            // Enable or disable features based on authorization.
+        }
+        application.registerForRemoteNotifications()
+    }
 
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        logXC.debug("Device Token String" + deviceTokenString)
+        
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        logXC.debug("inbound notification")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+        logXC.debug("didFailToRegisterForRemoteNotificationsWithError in simulator? \(error)")
+        
+    }
+    
 
 }
 

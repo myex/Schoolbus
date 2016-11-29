@@ -11,7 +11,7 @@ import AblyRealtime
 
 public protocol PositionModelDelegate {
     func positionModel(_ positionModel: PositionModel, connectionStateChanged:ARTConnectionStateChange)
-    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel)
+    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel, _ message: String)
     func positionModel(_ positionModel: PositionModel, didReceiveMessage message: ARTMessage)
     func positionModel(_ positionModel: PositionModel, didReceiveError error: ARTErrorInfo)
 }
@@ -19,7 +19,7 @@ public protocol PositionModelDelegate {
 open class PositionModel {
     fileprivate var ablyClientOptions: ARTClientOptions
     fileprivate var ablyRealtime: ARTRealtime?
-    fileprivate var channel: ARTRealtimeChannel?
+    fileprivate var channelLocation: ARTRealtimeChannel?
     
     open var clientId: String
     open var delegate: PositionModelDelegate?
@@ -69,8 +69,9 @@ open class PositionModel {
             }
         }
         
-        channel = realtime.channels.get("Position")
+        channelLocation = realtime.channels.get("Position")
         self.joinChannel()
+
 
     }
     
@@ -79,14 +80,14 @@ open class PositionModel {
         self.ablyRealtime?.connection.close()
     };
     
-    open func publishMessage(_ message: String) {
-        self.channel?.publish(self.clientId, data: message, clientId: self.clientId) { error in
+    open func publishLocationMessage(_ message: String) {
+        self.channelLocation?.publish(self.clientId, data: message, clientId: self.clientId) { error in
             guard error == nil else {
                 self.signalError(error!)
                 return
             }
             
-            self.delegate?.positionModelDidFinishSendingMessage(self)
+            self.delegate?.positionModelDidFinishSendingMessage(self, message)
         }
     }
 
@@ -100,7 +101,7 @@ open class PositionModel {
     
     fileprivate func joinChannel() {
         
-        guard let channel = self.channel else { return }
+        guard let channel = self.channelLocation else { return }
         
         channel.attach()
         channel.subscribe { self.delegate?.positionModel(self, didReceiveMessage: $0) }
@@ -109,11 +110,12 @@ open class PositionModel {
     }
     
     fileprivate func didChannelLoseState(_ error: ARTErrorInfo?) {
-        self.channel?.unsubscribe()
+        self.channelLocation?.unsubscribe()
         self.ablyRealtime?.connection.once(.connected) { state in
             self.joinChannel()
         }
     }
+    
     
     fileprivate func signalError(_ error: ARTErrorInfo) {
         self.delegate?.positionModel(self, didReceiveError: error)
