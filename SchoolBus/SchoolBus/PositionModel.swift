@@ -80,7 +80,6 @@ open class PositionModel {
     };
     
     open func publishMessage(_ message: String) {
-        
         self.channel?.publish(self.clientId, data: message, clientId: self.clientId) { error in
             guard error == nil else {
                 self.signalError(error!)

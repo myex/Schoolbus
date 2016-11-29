@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate     {
         // Override point for customization after application launch.
         logXC.setup(level: .debug, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: path, fileLevel: .debug)
         logXC.debug("Started logging")
+       
         return true
     }
 

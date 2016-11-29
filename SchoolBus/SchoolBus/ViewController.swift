@@ -16,7 +16,7 @@ import ReachabilitySwift
 import XCGLogger
 
 
-class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, PositionModelDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate, CLLocationManagerDelegate {
     
     // MARK: Properties
 
@@ -33,10 +33,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     //declare this property where it won't go out of scope relative to your listener
     var transmitDate: Date!
-
-    var locationManager: CLLocationManager = CLLocationManager()
+    var locationManager : CLLocationManager!
     var startLocation: CLLocation!
     var model: PositionModel!
+    var regionSet: Bool = false
+    var deferringUpdates: Bool = false
+    
  
     override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -46,39 +48,38 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.activityType = CLActivityType.automotiveNavigation
-        
-        locationManager.distanceFilter = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 5
-        locationManager.startUpdatingLocation()
-        
+   
         startLocation = nil
         mapView.delegate = self
-   
-        let region = MKCoordinateRegionMakeWithDistance((locationManager.location?.coordinate)!,500, 500)
-        mapView.setRegion(region, animated: true)
-
         
-        self.model = PositionModel(clientId: "1")
+        self.model = PositionModel(clientId: UIDevice.current.identifierForVendor!.uuidString)
+        logXC.info("Initiating realtime model, ClientID:" + UIDevice.current.identifierForVendor!.uuidString)
+        
         self.model.delegate = self
         self.model.connect()
         
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.activityType = .automotiveNavigation
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false //when set to true - application wouldn't come out of being paused.
+        locationManager.requestAlwaysAuthorization()
+
+        locationManager.startUpdatingLocation()
+        
     }
 
-    internal func sendHeartbeat()
-    {
-        model.publishMessage("HEARTBEAT")
-    }
-    
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
         let latestLocation: CLLocation = locations[locations.count - 1]
+        
+        if (regionSet == false) {
+            let region = MKCoordinateRegionMakeWithDistance((latestLocation.coordinate),500, 500)
+            mapView.setRegion(region, animated: true)
+            regionSet = true
+        }
         
         lblLat.text = String(format: "%.6f", latestLocation.coordinate.latitude)
         lblLong.text = String(format: "%.6f",latestLocation.coordinate.longitude)
@@ -88,7 +89,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         //Get speed - note if horitontal accurancy is greater than 50 it seems very innacurate.
         var speed: CLLocationSpeed = CLLocationSpeed()
-        speed = locationManager.location!.speed
+        speed = latestLocation.speed
         var spd: Double = speed
         if (latestLocation.horizontalAccuracy > 50){
             spd = 0
@@ -126,21 +127,47 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         //publish to the channel
         model.publishMessage(locationString)
-        logXC.debug("Attempted to transmit " + locationString)
+        logXC.verbose("Attempted to transmit " + locationString)
         transmitDate = Date()
         lblDelay.text = "Real time"
         
+        
+        if (self.deferringUpdates == false) {
+            logXC.debug("Attempting to start deferring updates")
+            
+            self.locationManager?.allowDeferredLocationUpdates (untilTraveled: CLLocationDistance(10), timeout: 60)
+            
+            self.deferringUpdates = true
+            logXC.debug("Now with deferred updates")
+        }
+        
+        
+    }
+    
+    internal func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+        logXC.debug("locationManagerDidPauseLocationUpdates")
+    }
+    
+    internal func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
+        logXC.debug("locationManagerDidResumeLocationUpdates")
+    }
+    
+    internal func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
+        logXC.debug("locationManager didFinishDeferredUpdates!!")
+        logXC.debug("locationManager didFinishDeferredUpdates debugDescription" + error.debugDescription)
     }
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
-        logXC.debug("locationManager Error:" + error.localizedDescription)
+        logXC.error("locationManager Error:" + error.localizedDescription)
     }
     
     internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
     {
         mapView.centerCoordinate = userLocation.coordinate
     }
+
+    
 
 }
 
@@ -153,46 +180,18 @@ extension PositionModelDelegate {
     }
     
     func positionModel(_ positionModel: PositionModel, didReceiveError error: ARTErrorInfo) {
-        logXC.debug("positionModel Error " + error.message)
+        logXC.error("positionModel Error " + error.message)
     }
     
     func positionModel(_ positionModel: PositionModel, didReceiveMessage message: ARTMessage) {
         let s: String = message.data as! String
-        logXC.debug("positionModel Received message " + s)
+        logXC.verbose("positionModel Received message " + s)
     }
     
     func positionModelDidFinishSendingMessage(_ positionModel: PositionModel) {
-        logXC.debug("positionModelDidFinishSendingMessage FinishedSendingMessage")
+        logXC.verbose("positionModelDidFinishSendingMessage FinishedSendingMessage")
     }
 }
-
-/*
- internal func initNetwork()
- {
- 
- reachability.whenReachable = { reachability in
- if reachability.isReachableViaWiFi {
- self.view.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
- } else {
- self.view.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
- }
- self.transmit = true
- }
- 
- reachability.whenUnreachable = { reachability in
- self.transmit = false
- self.view.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
- 
- }
- 
- do {
- try reachability.startNotifier()
- } catch {
- self.view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
- }
- 
- }
- */
 
 
 
