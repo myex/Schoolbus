@@ -17,29 +17,27 @@ import XCGLogger
 import UserNotifications
 import UserNotificationsUI //framework to customize the notification
 
-class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate,ConnectionModelDelegate {
     
     // MARK: Properties
-
     @IBOutlet weak var lblLong: UILabel!
     @IBOutlet weak var lblHorizAcc: UILabel!
     @IBOutlet weak var lblAltitude: UILabel!
     @IBOutlet weak var lblVertAcc: UILabel!
     @IBOutlet weak var lblLat: UILabel!
-    @IBOutlet weak var lblDistance: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var lblSpeed: UILabel!
-    @IBOutlet weak var lblDelay: UILabel!
-    @IBOutlet weak var lblPosTime: UILabel!
+    @IBOutlet weak var lblPositionTime: UILabel!
     
-    //declare this property where it won't go out of scope relative to your listener
-    var transmitDate: Date!
+
+    
+    
     var locationManager : CLLocationManager!
-    var startLocation: CLLocation!
-    var model: PositionModel!
+    var model: ConnectionModel!
     var regionSet: Bool = false
     var deferringUpdates: Bool = false
- 
+    var lastInfoTransmission: Date = Date.init()
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -47,14 +45,12 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
     override func viewDidLoad() {
         
         super.viewDidLoad()
-   
-        startLocation = nil
+        
         mapView.delegate = self
         
-        self.model = PositionModel(clientId: UIDevice.current.identifierForVendor!.uuidString)
+        //Initiate pub sub connection
         logXC.info("Initiating realtime model, ClientID:" + UIDevice.current.identifierForVendor!.uuidString)
-        
-        //register for pubsub
+        self.model = ConnectionModel(clientId: UIDevice.current.identifierForVendor!.uuidString)
         self.model.delegate = self
         self.model.connect()
     
@@ -63,6 +59,15 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
 
         //register self as delegate for incoming notification
         UNUserNotificationCenter.current().delegate = self
+        
+        //Monitor geofences
+        PositionTools.startRegionMonitoring(locationManager, mapView)
+        
+        //start monitoring battery level
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        let infoString = PositionTools.EncodeInfo()
+        logXC.info("Logging info :: " + infoString)
+        model.publishMessage(infoString)
         
     }
     
@@ -78,14 +83,16 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
     }
-    
+
 
     internal  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
+        
         let latestLocation: CLLocation = locations[locations.count - 1]
         
+        //centre map - once
         if (regionSet == false) {
-            let region = MKCoordinateRegionMakeWithDistance((latestLocation.coordinate),500, 500)
+            let region = MKCoordinateRegionMakeWithDistance((latestLocation.coordinate),3000, 3000)
             mapView.setRegion(region, animated: true)
             regionSet = true
         }
@@ -96,34 +103,35 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         lblAltitude.text = String(format: "%.6f",latestLocation.altitude)
         lblVertAcc.text = String(format: "%.6f", latestLocation.verticalAccuracy)
         lblSpeed.text = String(format: "%.0f mph", PositionTools.speed(latestLocation))
-        
-        if startLocation == nil {
-            startLocation = latestLocation
-        }
-        
-        let distanceBetween: CLLocationDistance =
-            latestLocation.distance(from: startLocation)
-        
-        lblDistance.text = String(format: "%.2f", distanceBetween)
-        
-        startLocation = latestLocation
 
-        let locationString = PositionTools.Pack(latestLocation)
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let locationTimeStamp = dateformatter.string(from: latestLocation.timestamp)
+        lblPositionTime.text = locationTimeStamp
         
+        //encode location string
+        let locationString = PositionTools.EncodePosition(latestLocation)
+
         //publish to the channel
-        model.publishLocationMessage(locationString)
+        model.publishMessage(locationString)
         logXC.verbose("Attempted to transmit " + locationString)
-        transmitDate = Date()
-        lblDelay.text = "Real time"
         
-        if (self.deferringUpdates == false) {
-            logXC.debug("Attempting to start deferring updates")
-            
-            self.locationManager?.allowDeferredLocationUpdates (untilTraveled: CLLocationDistance(10), timeout: 60)
-            
-            self.deferringUpdates = true
-            logXC.debug("Now with deferred updates")
+        //When was the last time we transmitted state information
+        if(abs(Int(lastInfoTransmission.timeIntervalSinceNow)) > 60)    //600
+        {
+            lastInfoTransmission = Date()
+            let infoString = PositionTools.EncodeInfo()
+            logXC.verbose("Logging info :: " + infoString)
+            model.publishMessage(infoString)
         }
+
+//        //attempt to defer updates.
+//        if (self.deferringUpdates == false) {
+//            logXC.debug("Attempting to start deferring updates")
+//            self.locationManager?.allowDeferredLocationUpdates (untilTraveled: CLLocationDistance(10), timeout: 60)
+//            self.deferringUpdates = true
+//            logXC.debug("Now with deferred updates")
+//        }
         
     }
     
@@ -145,33 +153,48 @@ class ViewController: UIViewController, MKMapViewDelegate, PositionModelDelegate
         logXC.error("locationManager Error:" + error.localizedDescription)
     }
     
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        logXC.error("locationManager Monitoring failed for region with identifier: \(region!.identifier)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            logXC.info("Entered Region " + region.identifier)
+            let message = PositionTools.EncodeRegion("ENTERED",region.identifier)
+            logXC.verbose("Region message: " + message)
+            logXC.verbose("Region message about to be sent")
+            model.publishMessage(message)
+            logXC.verbose("Region message sent")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            logXC.info("Exitted Region " + region.identifier)
+            let message = PositionTools.EncodeRegion("EXITTED",region.identifier)
+            logXC.verbose("Region message: " + message)
+            logXC.verbose("Region message about to be sent")
+            model.publishMessage(message)
+            logXC.verbose("Region message sent")
+        }
+    }
+    
     internal func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation)
     {
         mapView.centerCoordinate = userLocation.coordinate
     }
-
-}
-
-extension PositionModelDelegate {
-    func positionModel(_ positionModel: PositionModel, connectionStateChanged: ARTConnectionStateChange) {
-        if (connectionStateChanged.current == ARTRealtimeConnectionState.closed)
-        {
+    
+    internal func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay.isKind(of: MKCircle.self){
+            let circleRenderer = MKCircleRenderer(overlay: overlay)
+            circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.1)
+            circleRenderer.strokeColor = UIColor.blue
+            circleRenderer.lineWidth = 1
+            return circleRenderer
         }
-        logXC.debug("positionModel connectionstatechanged ")
+        return MKOverlayRenderer(overlay: overlay)
     }
     
-    func positionModel(_ positionModel: PositionModel, didReceiveError error: ARTErrorInfo) {
-        logXC.error("positionModel Error " + error.message)
-    }
-    
-    func positionModel(_ positionModel: PositionModel, didReceiveMessage message: ARTMessage) {
-        let s: String = message.data as! String
-        logXC.verbose("positionModel Received message " + s)
-    }
-    
-    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel, _ message: String) {
-        logXC.verbose("positionModelDidFinishSendingMessage FinishedSendingMessage :" + message)
-    }
 }
 
 

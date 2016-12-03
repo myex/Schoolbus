@@ -1,5 +1,5 @@
 //
-//  PositionModel.swift
+//  ConnectionModel.swift
 //  SchoolBus
 //
 //  Created by Paul Freeman on 14/11/2016.
@@ -9,20 +9,20 @@
 import Foundation
 import AblyRealtime
 
-public protocol PositionModelDelegate {
-    func positionModel(_ positionModel: PositionModel, connectionStateChanged:ARTConnectionStateChange)
-    func positionModelDidFinishSendingMessage(_ positionModel: PositionModel, _ message: String)
-    func positionModel(_ positionModel: PositionModel, didReceiveMessage message: ARTMessage)
-    func positionModel(_ positionModel: PositionModel, didReceiveError error: ARTErrorInfo)
+public protocol ConnectionModelDelegate {
+//    func connectionModel(_ connectionModel: ConnectionModel, connectionStateChanged:ARTConnectionStateChange)
+//    func connectionModelDidFinishSendingMessage(_ connectionModel: ConnectionModel, _ message: String)
+//    func connectionModel(_ connectionModel: ConnectionModel, didReceiveMessage message: ARTMessage)
+//    func connectionModel(_ connectionModel: ConnectionModel, didReceiveError error: ARTErrorInfo)
 }
 
-open class PositionModel {
+open class ConnectionModel {
     fileprivate var ablyClientOptions: ARTClientOptions
     fileprivate var ablyRealtime: ARTRealtime?
     fileprivate var channelLocation: ARTRealtimeChannel?
     
     open var clientId: String
-    open var delegate: PositionModelDelegate?
+    open var delegate: ConnectionModelDelegate?
     
     public init(clientId: String) {
         self.clientId = clientId
@@ -47,31 +47,71 @@ open class PositionModel {
 
         self.ablyRealtime = ARTRealtime(key: "QGOsVA.UnM4VQ:YuOO9DIWTgs2BcPZ")
         let realtime = self.ablyRealtime!
+       
+        channelLocation = realtime.channels.get("Position")
         
         realtime.connection.on { stateChange in
             if let stateChange = stateChange {
-                self.delegate?.positionModel(self, connectionStateChanged: stateChange)
+                
+                logXC.verbose("connection state change: " + stateChange.debugDescription)
                 
                 switch stateChange.current {
                 case .connected:
-                    
                     logXC.debug("state change to connected")
-                    self.attemptReconnect(100)
+                    //self.attemptClientReconnect(2)
                 case .disconnected:
                     logXC.debug("state change to disconnected")
-                    self.attemptReconnect(5000)
+                    self.attemptClientReconnect(10)
                 case .suspended:
                     logXC.debug("state change to suspended")
-                    self.attemptReconnect(5000)
+                    self.attemptClientReconnect(15)
+                case .closed:
+                    logXC.debug("state change to closed")
+                    self.attemptClientReconnect(20)
+                case .failed:
+                    logXC.debug("state change to failed")
+                    self.attemptClientReconnect(20)
+                    
                 default:
                     break
                 }
             }
         }
         
-        channelLocation = realtime.channels.get("Position")
-        self.joinChannel()
+        channelLocation?.on(.initialized) { error in
+            logXC.verbose("channel initialized: ")
+        }
 
+        channelLocation?.on(.attaching) { error in
+            logXC.verbose("channel attaching: ")
+        }
+        
+        channelLocation?.on(.attached) { error in
+            logXC.verbose("channel attached: ")
+        }
+        
+        channelLocation?.on(.detaching) { error in
+            logXC.verbose("channel detaching: " + error.debugDescription)
+        }
+        
+        channelLocation?.on(.detached) { error in
+            logXC.error("channel detached: " + error.debugDescription)
+            self.joinChannel()
+        }
+
+        channelLocation?.on(.error) { error in
+            logXC.error("channel error: " + error.debugDescription)
+            self.joinChannel()
+        }
+        
+        channelLocation?.on(.failed) { error in
+            logXC.error("channel failed: " + error.debugDescription)
+            self.ablyRealtime?.connect()
+            self.joinChannel()
+        }
+
+        self.ablyRealtime?.connect()
+        self.joinChannel()
 
     }
     
@@ -80,49 +120,65 @@ open class PositionModel {
         self.ablyRealtime?.connection.close()
     };
     
-    open func publishLocationMessage(_ message: String) {
-        self.channelLocation?.publish(self.clientId, data: message, clientId: self.clientId) { error in
-            guard error == nil else {
-                self.signalError(error!)
-                return
+    open func publishMessage(_ message: String) {
+        
+        if(self.ablyRealtime?.connection.state == ARTRealtimeConnectionState.connected)
+        {
+        
+            logXC.verbose("Attempting to PublishMessage :" + message)
+            self.channelLocation?.publish(self.clientId, data: message, clientId: self.clientId) { error in
+                
+                guard error == nil else {
+                    //Let the world know there was an error
+                    logXC.error("Error Publishing Message" + (error?.message)! + "\n" + error.debugDescription)
+                    
+                    //now try and reconnect
+                    self.joinChannel()
+                    
+                    return
+                }
+                
             }
             
-            self.delegate?.positionModelDidFinishSendingMessage(self, message)
+            logXC.verbose("Finished PublishMessage :" + message)
+            
+        }
+        else {
+            logXC.verbose("Client not connected - will not attempt to publish message.")
         }
     }
 
     
-    fileprivate func attemptReconnect(_ delay: Double) {
-        self.delay(delay) {
+    fileprivate func attemptClientReconnect(_ delay: Double) {
+        logXC.verbose("Starting delay of " + String(delay))
+         self.delay(delay) {
             self.ablyRealtime?.connect()
-            self.joinChannel()
-        }
+         }
     }
     
     fileprivate func joinChannel() {
         
+        logXC.verbose("Joining channel")
         guard let channel = self.channelLocation else { return }
         
+        //channel.unsubscribe()
+        channel.detach()
         channel.attach()
-        channel.subscribe { self.delegate?.positionModel(self, didReceiveMessage: $0) }
-        channel.once(ARTChannelEvent.detached, callback: self.didChannelLoseState)
-        channel.once(ARTChannelEvent.failed, callback: self.didChannelLoseState)
+        //channel.subscribe { self.delegate?.connectionModel(self, didReceiveMessage: $0) }
+        
+        logXC.verbose("Channel should now be connected")
     }
     
-    fileprivate func didChannelLoseState(_ error: ARTErrorInfo?) {
-        self.channelLocation?.unsubscribe()
-        self.ablyRealtime?.connection.once(.connected) { state in
-            self.joinChannel()
-        }
-    }
+//    fileprivate func didChannelLoseState(_ error: ARTErrorInfo?) {
+//        self.channelLocation?.unsubscribe()
+//        self.ablyRealtime?.connection.once(.connected) { state in
+//            self.joinChannel()
+//        }
+//    }
     
-    
-    fileprivate func signalError(_ error: ARTErrorInfo) {
-        self.delegate?.positionModel(self, didReceiveError: error)
-    }
     
     fileprivate func delay(_ delay: Double, block: @escaping () -> Void) {
-        let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        let time = DispatchTime.now() + Double(Int64((delay * 333.333333) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: time, execute: block)
     }
     

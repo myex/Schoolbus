@@ -8,10 +8,29 @@
 
 import Foundation
 import CoreLocation
+import UIKit
+import MapKit
 
 open class PositionTools {
     
-    open static func Pack(_ location: CLLocation) -> String {
+    open static func EncodeInfo() -> String {
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let nowDate: Date = Date()
+        let now = dateformatter.string(from: nowDate)
+
+        var info = "INFORMATION"
+        info = info + "|" + (UIDevice.current.identifierForVendor?.uuidString)!
+        info = info + "|" + String(UIDevice.current.systemName)
+        info = info + "|" + String(UIDevice.current.systemVersion)
+        info = info + "|" + String(format: "%.2f",UIDevice.current.batteryLevel)
+        info = info + "|" + now
+        
+        return info
+    }
+    
+    open static func EncodePosition(_ location: CLLocation) -> String {
         
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -21,6 +40,7 @@ open class PositionTools {
         let now = dateformatter.string(from: nowDate)
         
         var locationString = ""
+        locationString = "POSITION|"
         locationString = locationString + String(format: "%.6f",location.coordinate.latitude)
         locationString = locationString + "|" + String(format: "%.6f",location.coordinate.longitude)
         locationString = locationString + "|" + String(format: "%.6f",location.horizontalAccuracy)
@@ -31,22 +51,49 @@ open class PositionTools {
         return locationString
     }
     
-    open static func Unpack(_ locationstring: String) -> CLLocation
-    {
-        let splitArray = locationstring.components(separatedBy: "|")
-        
-        let lat: Double = Double(splitArray[0] as String)!
-        let lon: Double = Double(splitArray[1] as String)!
-        let horizAcc: Double = Double(splitArray[2] as String)!
-        let speed: Double = Double(splitArray[3] as String)!
+    open static func EncodeRegion(_ state: String, _ region: String) -> String {
         
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let nowDate: Date = Date()
+        let now = dateformatter.string(from: nowDate)
         
-        let locTS: Date = dateformatter.date(from: splitArray[4] as String!)!
-        let  locationCoord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        var locationString = ""
+        locationString = "REGION"
+        locationString = locationString + "|" + state
+        locationString = locationString + "|" + region
+        locationString = locationString + "|" + now
         
-        let location: CLLocation = CLLocation.init(coordinate: locationCoord, altitude: 0, horizontalAccuracy: horizAcc, verticalAccuracy: 1, course: CLLocationDirection.init(), speed: CLLocationSpeed.init(speed/2.23693629), timestamp: locTS)
+        return locationString
+    }
+    
+    
+    open static func DecodePosition(_ locationstring: String) -> CLLocation
+    {
+        let splitArray = locationstring.components(separatedBy: "|")
+        var location: CLLocation = CLLocation()
+        
+        if (splitArray[0] == "POSITION")
+        {
+        
+            let lat: Double = Double(splitArray[1] as String)!
+            let lon: Double = Double(splitArray[2] as String)!
+            let horizAcc: Double = Double(splitArray[3] as String)!
+            let speed: Double = Double(splitArray[4] as String)!
+            
+            let dateformatter = DateFormatter()
+            dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            
+            let locTS: Date = dateformatter.date(from: splitArray[5] as String!)!
+            let  locationCoord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            
+                location = CLLocation.init(coordinate: locationCoord, altitude: 0, horizontalAccuracy: horizAcc, verticalAccuracy: 1, course: CLLocationDirection.init(), speed: CLLocationSpeed.init(speed/2.23693629), timestamp: locTS)
+
+        }
+        else
+        {
+            //throw an error
+        }
         return location
         
     }
@@ -65,5 +112,29 @@ open class PositionTools {
         
         return spd
     }
+    
+    open static func startRegionMonitoring(_ locationManager: CLLocationManager, _ mapView: MKMapView) {
+        
+        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            logXC.error("We Can't monitor on this device!!!!")
+            return
+        }
+        
+        addRegion(locationManager, mapView, "School", 51.163086,0.326432, 150)
+        addRegion(locationManager, mapView, "Drop Off", 51.122586, 0.276560, 50)
+        addRegion(locationManager, mapView, "Drop Off 1k", 51.122586, 0.276560, 1000)
+        addRegion(locationManager, mapView, "Pick Up", 51.120603, 0.272722, 75)
+        addRegion(locationManager, mapView, "Home", 51.122039, 0.278730, 50)
+        
+    }
+    
+}
 
+func addRegion(_ locationManager: CLLocationManager, _ mapView: MKMapView, _ identity:String, _ lat:Double, _ lon:Double, _ radius:Double)
+{
+    let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2D(latitude: lat, longitude : lon), radius: radius, identifier: identity)
+    region.notifyOnEntry = true
+    region.notifyOnExit = true
+    locationManager.startMonitoring(for: region)
+    mapView.add(MKCircle(center: CLLocationCoordinate2D(latitude: lat, longitude : lon), radius: radius))
 }

@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B105989F1DDA5C0500B352D3 /* PositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105989E1DDA5C0500B352D3 /* PositionModel.swift */; };
+		B105989F1DDA5C0500B352D3 /* ConnectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */; };
 		B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */; };
 		B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD411D8DFFCC000E53B6 /* ViewController.swift */; };
 		B15FFD451D8DFFCC000E53B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD431D8DFFCC000E53B6 /* Main.storyboard */; };
 		B15FFD471D8DFFCC000E53B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD461D8DFFCC000E53B6 /* Assets.xcassets */; };
-		B15FFD4A1D8DFFCC000E53B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */; };
 		B15FFD551D8DFFCC000E53B6 /* SchoolBusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD541D8DFFCC000E53B6 /* SchoolBusTests.swift */; };
 		B15FFD601D8DFFCC000E53B6 /* SchoolBusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */; };
+		B17C62571DF0CFA200783C8F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17C62551DF0CFA200783C8F /* LaunchScreen.xib */; };
 		B1B8EC621DC8826B0052DBD8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B1B8EC611DC8826B0052DBD8 /* Podfile */; };
 		DA0274961DEDF20300D21213 /* PositionTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0274951DEDF20300D21213 /* PositionTools.swift */; };
 		DA4817251DC776DD0078E300 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4817241DC776DD0078E300 /* MapKit.framework */; };
@@ -55,14 +55,13 @@
 		02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolBus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.release.xcconfig"; sourceTree = "<group>"; };
 		6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.debug.xcconfig"; sourceTree = "<group>"; };
-		B105989E1DDA5C0500B352D3 /* PositionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionModel.swift; sourceTree = "<group>"; };
+		B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionModel.swift; sourceTree = "<group>"; };
 		B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		B15FFD3C1D8DFFCC000E53B6 /* SchoolBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B15FFD411D8DFFCC000E53B6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B15FFD441D8DFFCC000E53B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B15FFD461D8DFFCC000E53B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B15FFD491D8DFFCC000E53B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B15FFD4B1D8DFFCC000E53B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B15FFD501D8DFFCC000E53B6 /* SchoolBusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SchoolBusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD541D8DFFCC000E53B6 /* SchoolBusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBusTests.swift; sourceTree = "<group>"; };
@@ -70,6 +69,7 @@
 		B15FFD5B1D8DFFCC000E53B6 /* SchoolBusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SchoolBusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD5F1D8DFFCC000E53B6 /* SchoolBusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBusUITests.swift; sourceTree = "<group>"; };
 		B15FFD611D8DFFCC000E53B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B17C62561DF0CFA200783C8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "../../../../Downloads/Geotify-Starter/Geotify/Base.lproj/LaunchScreen.xib"; sourceTree = "<group>"; };
 		B1B8EC611DC8826B0052DBD8 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		DA0274931DED8C3C00D21213 /* SchoolBus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchoolBus.entitlements; sourceTree = "<group>"; };
 		DA0274951DEDF20300D21213 /* PositionTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionTools.swift; sourceTree = "<group>"; };
@@ -131,14 +131,14 @@
 		B15FFD3E1D8DFFCC000E53B6 /* SchoolBus */ = {
 			isa = PBXGroup;
 			children = (
+				B15FFD4B1D8DFFCC000E53B6 /* Info.plist */,
+				B15FFD461D8DFFCC000E53B6 /* Assets.xcassets */,
 				DA0274931DED8C3C00D21213 /* SchoolBus.entitlements */,
 				B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */,
-				B15FFD411D8DFFCC000E53B6 /* ViewController.swift */,
 				B15FFD431D8DFFCC000E53B6 /* Main.storyboard */,
-				B15FFD461D8DFFCC000E53B6 /* Assets.xcassets */,
-				B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */,
-				B15FFD4B1D8DFFCC000E53B6 /* Info.plist */,
-				B105989E1DDA5C0500B352D3 /* PositionModel.swift */,
+				B15FFD411D8DFFCC000E53B6 /* ViewController.swift */,
+				B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */,
+				B17C62551DF0CFA200783C8F /* LaunchScreen.xib */,
 			);
 			path = SchoolBus;
 			sourceTree = "<group>";
@@ -307,7 +307,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B15FFD4A1D8DFFCC000E53B6 /* LaunchScreen.storyboard in Resources */,
+				B17C62571DF0CFA200783C8F /* LaunchScreen.xib in Resources */,
 				B15FFD471D8DFFCC000E53B6 /* Assets.xcassets in Resources */,
 				B1B8EC621DC8826B0052DBD8 /* Podfile in Resources */,
 				B15FFD451D8DFFCC000E53B6 /* Main.storyboard in Resources */,
@@ -384,7 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA0274961DEDF20300D21213 /* PositionTools.swift in Sources */,
-				B105989F1DDA5C0500B352D3 /* PositionModel.swift in Sources */,
+				B105989F1DDA5C0500B352D3 /* ConnectionModel.swift in Sources */,
 				B15FFD421D8DFFCC000E53B6 /* ViewController.swift in Sources */,
 				B15FFD401D8DFFCC000E53B6 /* AppDelegate.swift in Sources */,
 			);
@@ -430,12 +430,12 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		B15FFD481D8DFFCC000E53B6 /* LaunchScreen.storyboard */ = {
+		B17C62551DF0CFA200783C8F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B15FFD491D8DFFCC000E53B6 /* Base */,
+				B17C62561DF0CFA200783C8F /* Base */,
 			);
-			name = LaunchScreen.storyboard;
+			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -539,6 +539,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchoolBus/SchoolBus.entitlements;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -558,6 +559,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchoolBus/SchoolBus.entitlements;
 				DEVELOPMENT_TEAM = 9V9KDQQ5K4;
 				INFOPLIST_FILE = SchoolBus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

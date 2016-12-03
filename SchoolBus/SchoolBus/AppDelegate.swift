@@ -14,12 +14,9 @@ let logXC = XCGLogger.default
 var deviceTokenString: String = ""
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate     {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
-  
-    
     var window: UIWindow?
-
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -33,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate     {
         let path = dir?.appendingPathComponent(file)
         
         // Initiate logging
-        logXC.setup(level: .debug, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: path, fileLevel: .debug)
+        logXC.setup(level: .verbose, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: path, fileLevel: .debug)
         logXC.debug("Started logging")
         
         //Initiate Notifications
@@ -61,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate     {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        logXC.info("Application Terminating")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
