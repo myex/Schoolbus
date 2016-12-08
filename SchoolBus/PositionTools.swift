@@ -13,6 +13,20 @@ import MapKit
 
 open class PositionTools {
     
+    
+    open static func initLocationManager(_ locationManager: CLLocationManager)
+    {
+
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.activityType = .automotiveNavigation
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false //when set to true - application wouldn't come out of being paused.
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    
     open static func EncodeInfo() -> String {
         
         let dateformatter = DateFormatter()
@@ -121,10 +135,10 @@ open class PositionTools {
         }
         
         addRegion(locationManager, mapView, "School", 51.163086,0.326432, 150)
-        addRegion(locationManager, mapView, "Drop Off", 51.122586, 0.276560, 50)
+        addRegion(locationManager, mapView, "Drop Off", 51.122586, 0.276560, 40)
         addRegion(locationManager, mapView, "Drop Off 1k", 51.122586, 0.276560, 1000)
-        addRegion(locationManager, mapView, "Pick Up", 51.120603, 0.272722, 75)
-        addRegion(locationManager, mapView, "Home", 51.122039, 0.278730, 50)
+        addRegion(locationManager, mapView, "Pick Up", 51.120603, 0.272722, 40)
+        addRegion(locationManager, mapView, "Home", 51.122039, 0.278730, 40)
         
     }
     
@@ -138,3 +152,4 @@ func addRegion(_ locationManager: CLLocationManager, _ mapView: MKMapView, _ ide
     locationManager.startMonitoring(for: region)
     mapView.add(MKCircle(center: CLLocationCoordinate2D(latitude: lat, longitude : lon), radius: radius))
 }
+

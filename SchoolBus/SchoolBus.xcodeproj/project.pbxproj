@@ -55,7 +55,7 @@
 		02244778BFA53DF0D77330E8 /* Pods_SchoolBus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolBus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		286F8E046FF9D889AE745986 /* Pods-SchoolBus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.release.xcconfig"; sourceTree = "<group>"; };
 		6478BDD6E1E03A92BC37B5B0 /* Pods-SchoolBus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolBus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolBus/Pods-SchoolBus.debug.xcconfig"; sourceTree = "<group>"; };
-		B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionModel.swift; sourceTree = "<group>"; };
+		B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectionModel.swift; path = SchoolBus/ConnectionModel.swift; sourceTree = "<group>"; };
 		B11E9A3E1DCA24A700E001CF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		B15FFD3C1D8DFFCC000E53B6 /* SchoolBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,7 +137,6 @@
 				B15FFD3F1D8DFFCC000E53B6 /* AppDelegate.swift */,
 				B15FFD431D8DFFCC000E53B6 /* Main.storyboard */,
 				B15FFD411D8DFFCC000E53B6 /* ViewController.swift */,
-				B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */,
 				B17C62551DF0CFA200783C8F /* LaunchScreen.xib */,
 			);
 			path = SchoolBus;
@@ -173,6 +172,7 @@
 		DA0274941DEDF18800D21213 /* PositionTools */ = {
 			isa = PBXGroup;
 			children = (
+				B105989E1DDA5C0500B352D3 /* ConnectionModel.swift */,
 				DA0274951DEDF20300D21213 /* PositionTools.swift */,
 			);
 			name = PositionTools;

@@ -50,12 +50,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         //Initiate pub sub connection
         logXC.info("Initiating realtime model, ClientID:" + UIDevice.current.identifierForVendor!.uuidString)
-        self.model = ConnectionModel(clientId: UIDevice.current.identifierForVendor!.uuidString)
+        self.model = ConnectionModel(clientId: UIDevice.current.identifierForVendor!.uuidString, subscribe: false)
         self.model.delegate = self
         self.model.connect()
     
         //start monitoring location updates
-        initLocationManager()
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        PositionTools.initLocationManager(locationManager)
+
 
         //register self as delegate for incoming notification
         UNUserNotificationCenter.current().delegate = self
@@ -69,19 +72,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         logXC.info("Logging info :: " + infoString)
         model.publishMessage(infoString)
         
-    }
-    
-    internal func initLocationManager()
-    {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.activityType = .automotiveNavigation
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false //when set to true - application wouldn't come out of being paused.
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
     }
 
 
@@ -195,6 +185,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return MKOverlayRenderer(overlay: overlay)
     }
     
+    internal func connectionModel(_ connectionModel: ConnectionModel, didReceiveMessage message: ARTMessage)
+    {
+    }
 }
 
 
